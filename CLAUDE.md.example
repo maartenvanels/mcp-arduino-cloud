@@ -1,0 +1,34 @@
+# Arduino Cloud Home Automation Context
+
+This file can be used to provide context to Claude about your specific Arduino Cloud setup.
+Copy this to CLAUDE.md and customize it with your device information.
+
+## Quick Commands Examples
+- "Turn on the office light" → uses `control_light` with lightName="office" action="on"
+- "Dim the kitchen lights to 50%" → uses `control_light` with lightName="kitchen" action="dim" brightness=50
+- "Turn off all lights" → uses `control_light` multiple times for different rooms
+
+## Example Device Structure
+
+### Living Room
+- **Thing**: MainController (ID: your-thing-id-here)
+- **Lights**: 
+  - Living_Room_Main (dimmable)
+  - Living_Room_Accent (dimmable)
+
+### Kitchen
+- **Thing**: KitchenController (ID: your-thing-id-here)
+- **Lights**:
+  - Kitchen_Counter (dimmable)
+  - Kitchen_Island (dimmable)
+  - Kitchen_Cabinet (on/off)
+
+### Sensors
+- Temperature_Living (HOME_TEMPERATURE_C)
+- Motion_Kitchen (HOME_MOTION_SENSOR)
+
+## Tips for Quick Control
+1. Use the `control_light` tool - it automatically searches for lights
+2. You can use partial names: "office", "kitchen", "bedroom"
+3. For dimmable lights: specify brightness (0-100)
+4. Non-dimmable lights only accept on/off commands
