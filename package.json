@@ -4,9 +4,12 @@
   "description": "Model Context Protocol server for Arduino IoT Cloud integration",
   "main": "dist/index.js",
   "type": "module",
+  "bin": {
+    "mcp-arduino-cloud": "./bin/mcp-arduino-cloud.js"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/mcp-arduino-cloud.git"
+    "url": "https://github.com/maartenvanels/mcp-arduino-cloud.git"
   },
   "scripts": {
     "build": "tsc",
@@ -44,6 +47,7 @@
   },
   "files": [
     "dist/",
+    "bin/",
     "README.md",
     "LICENSE",
     ".env.example"

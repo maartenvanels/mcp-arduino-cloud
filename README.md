@@ -18,78 +18,85 @@ A Model Context Protocol (MCP) server for Arduino Cloud integration. This server
 - Arduino Cloud account with API access
 - Arduino Cloud API credentials (Client ID and Client Secret)
 
-## Installation
+## Quick Installation
 
-1. Clone this repository:
+### Option 1: NPM Global Install (Recommended)
+
+```bash
+npm install -g @mcp/arduino-cloud
+```
+
+### Option 2: Install from Source
 
 ```bash
 git clone https://github.com/maartenvanels/mcp-arduino-cloud.git
 cd mcp-arduino-cloud
-```
-
-2. Install dependencies:
-
-```bash
 npm install
+npm run build
 ```
 
-3. Create a `.env` file (copy from `.env.example`):
-
-```bash
-cp .env.example .env
-```
-
-4. Add your Arduino Cloud credentials to the `.env` file:
-
-```
-ARDUINO_CLOUD_CLIENT_ID=your-client-id
-ARDUINO_CLOUD_CLIENT_SECRET=your-client-secret
-```
-
-### Getting Arduino Cloud API Credentials
+## Getting Arduino Cloud API Credentials
 
 1. Go to [Arduino Cloud](https://app.arduino.cc)
 2. Navigate to "API Keys" in your account settings
 3. Create a new API key with appropriate permissions
 4. Copy the Client ID and Client Secret
 
-## Usage with Claude Desktop
+## Claude Desktop Configuration
 
-1. Build the project:
+Add the server to your Claude Desktop configuration (`claude_desktop_config.json`):
 
-```bash
-npm run build
-```
-
-2. Add the server to your Claude Desktop configuration (`claude_desktop_config.json`):
-
-**Windows:**
+### If installed globally via NPM:
 
 ```json
 {
   "mcpServers": {
     "arduino-cloud": {
+      "command": "mcp-arduino-cloud",
+      "env": {
+        "ARDUINO_CLOUD_CLIENT_ID": "your-client-id-here",
+        "ARDUINO_CLOUD_CLIENT_SECRET": "your-client-secret-here"
+      }
+    }
+  }
+}
+```
+
+### If installed from source:
+
+**Windows:**
+```json
+{
+  "mcpServers": {
+    "arduino-cloud": {
       "command": "node",
-      "args": ["C:\\path\\to\\mcp-arduino-cloud\\dist\\index.js"]
+      "args": ["C:\\path\\to\\mcp-arduino-cloud\\dist\\index.js"],
+      "env": {
+        "ARDUINO_CLOUD_CLIENT_ID": "your-client-id-here",
+        "ARDUINO_CLOUD_CLIENT_SECRET": "your-client-secret-here"
+      }
     }
   }
 }
 ```
 
 **macOS/Linux:**
-
 ```json
 {
   "mcpServers": {
     "arduino-cloud": {
       "command": "node",
-      "args": ["/path/to/mcp-arduino-cloud/dist/index.js"]
+      "args": ["/path/to/mcp-arduino-cloud/dist/index.js"],
+      "env": {
+        "ARDUINO_CLOUD_CLIENT_ID": "your-client-id-here",
+        "ARDUINO_CLOUD_CLIENT_SECRET": "your-client-secret-here"
+      }
     }
   }
 }
 ```
 
-3. Restart Claude Desktop
+After updating the configuration, restart Claude Desktop.
 
 ## Example Commands
 
