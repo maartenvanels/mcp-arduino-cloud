@@ -1,6 +1,6 @@
 {
   "name": "mcp-server-arduino-cloud",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Model Context Protocol server for Arduino IoT Cloud integration",
   "main": "dist/index.js",
   "type": "module",
