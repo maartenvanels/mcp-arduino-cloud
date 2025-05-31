@@ -18,15 +18,9 @@ A Model Context Protocol (MCP) server for Arduino Cloud integration. This server
 - Arduino Cloud account with API access
 - Arduino Cloud API credentials (Client ID and Client Secret)
 
-## Quick Installation
+## Installation
 
-### Option 1: NPM Global Install (Recommended)
-
-```bash
-npm install -g @mcp/arduino-cloud
-```
-
-### Option 2: Install from Source
+### Install from Source
 
 ```bash
 git clone https://github.com/maartenvanels/mcp-arduino-cloud.git
@@ -45,24 +39,6 @@ npm run build
 ## Claude Desktop Configuration
 
 Add the server to your Claude Desktop configuration (`claude_desktop_config.json`):
-
-### If installed globally via NPM:
-
-```json
-{
-  "mcpServers": {
-    "arduino-cloud": {
-      "command": "mcp-arduino-cloud",
-      "env": {
-        "ARDUINO_CLOUD_CLIENT_ID": "your-client-id-here",
-        "ARDUINO_CLOUD_CLIENT_SECRET": "your-client-secret-here"
-      }
-    }
-  }
-}
-```
-
-### If installed from source:
 
 **Windows:**
 ```json
