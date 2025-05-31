@@ -21,14 +21,18 @@ const server = new Server(
   }
 );
 
-let arduinoClient: ArduinoCloudClient;
+let arduinoClient: ArduinoCloudClient | null = null;
 
-try {
-  const config = getConfig();
-  arduinoClient = new ArduinoCloudClient(config);
-} catch (error) {
-  console.error('Failed to initialize Arduino Cloud client:', error);
-  process.exit(1);
+function getArduinoClient(): ArduinoCloudClient {
+  if (!arduinoClient) {
+    try {
+      const config = getConfig();
+      arduinoClient = new ArduinoCloudClient(config);
+    } catch (error) {
+      throw new Error(`Failed to initialize Arduino Cloud client: ${error}`);
+    }
+  }
+  return arduinoClient;
 }
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -150,7 +154,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case 'list_devices': {
-        const devices = await arduinoClient.getDevices();
+        const devices = await getArduinoClient().getDevices();
         return {
           content: [
             {
@@ -163,7 +167,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'get_device': {
         const { deviceId } = args as { deviceId: string };
-        const device = await arduinoClient.getDevice(deviceId);
+        const device = await getArduinoClient().getDevice(deviceId);
         return {
           content: [
             {
@@ -175,7 +179,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'list_things': {
-        const things = await arduinoClient.getThings();
+        const things = await getArduinoClient().getThings();
         return {
           content: [
             {
@@ -188,7 +192,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'list_properties': {
         const { thingId } = args as { thingId: string };
-        const properties = await arduinoClient.getProperties(thingId);
+        const properties = await getArduinoClient().getProperties(thingId);
         return {
           content: [
             {
@@ -201,7 +205,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'get_property': {
         const { thingId, propertyId } = args as { thingId: string; propertyId: string };
-        const property = await arduinoClient.getProperty(thingId, propertyId);
+        const property = await getArduinoClient().getProperty(thingId, propertyId);
         return {
           content: [
             {
@@ -229,7 +233,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           }
         }
         
-        await arduinoClient.updateProperty(thingId, propertyId, parsedValue);
+        await getArduinoClient().updateProperty(thingId, propertyId, parsedValue);
         return {
           content: [
             {
@@ -248,12 +252,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
 
         // Get all things to find lights
-        const things = await arduinoClient.getThings();
+        const things = await getArduinoClient().getThings();
         const lightsFound: Array<{thing: any, property: any}> = [];
 
         // Search for lights matching the name
         for (const thing of things) {
-          const properties = await arduinoClient.getProperties(thing.id);
+          const properties = await getArduinoClient().getProperties(thing.id);
           for (const prop of properties) {
             if (prop.type.includes('LIGHT') && 
                 prop.name.toLowerCase().includes(lightName.toLowerCase())) {
@@ -292,7 +296,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             value = action !== 'off';
           }
 
-          await arduinoClient.updateProperty(thing.id, property.id, value);
+          await getArduinoClient().updateProperty(thing.id, property.id, value);
           results.push(`${property.name} (${thing.name}): ${action}${brightness ? ` at ${brightness}%` : ''}`);
         }
 
